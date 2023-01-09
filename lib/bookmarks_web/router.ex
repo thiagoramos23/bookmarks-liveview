@@ -17,12 +17,6 @@ defmodule BookmarksWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", BookmarksWeb do
-    pipe_through :browser
-
-    get "/", PageController, :home
-  end
-
   # Other scopes may use custom stacks.
   # scope "/api", BookmarksWeb do
   #   pipe_through :api
@@ -69,6 +63,7 @@ defmodule BookmarksWeb.Router do
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
 
+      live "/", BookmarkLive.Index, :index
       live "/bookmarks", BookmarkLive.Index, :index
       live "/bookmarks/new", BookmarkLive.Index, :new
       live "/bookmarks/:id/edit", BookmarkLive.Index, :edit
