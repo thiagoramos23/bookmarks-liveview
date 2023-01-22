@@ -9,7 +9,7 @@ defmodule Bookmarks.Pagination.Paginator do
   @spec call(Ecto.Query.t(), map()) :: Page.t()
   def call(query, opts \\ %{}) do
     page = Map.get(opts, :page, 1) || 1
-    limit = Map.get(opts, :size, 10)
+    limit = Map.get(opts, :size, 1000)
     preloads = Map.get(opts, :preloads, [])
 
     final_query =
