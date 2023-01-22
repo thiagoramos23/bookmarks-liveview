@@ -1,25 +1,29 @@
 defmodule BookmarksWeb.BookmarkLive.BookmarkComponents do
   use Phoenix.Component
-
-  alias Phoenix.LiveView.JS
+  import BookmarksWeb.CoreComponents
 
   attr :id, :string, required: true
-  attr :rows, :list, required: true
+  attr :query_term, :string
+  attr :rows, :list
   slot :actions
 
   def search(assigns) do
     ~H"""
-    <div class="mt-1">
-      <div class="flex items-center">
-        <input
-          placeholder="Search your bookmarks"
-          class="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 appearance-none rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm mr-2"
-        />
-        <button class="flex justify-center w-32 px-2 py-2 text-sm font-semibold text-white bg-indigo-500 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600">
-          Search
-        </button>
-      </div>
-    </div>
+    <.form id={@id} for={:form} phx-submit="search" phx-change="search" class="flex flex-items">
+      <input
+        type="text"
+        name="search"
+        class="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 appearance-none rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm mr-2"
+        value={@query_term}
+        phx-debounce="500"
+      />
+      <.button
+        type="submit"
+        class="flex justify-center w-32 px-2 py-2 text-sm font-semibold text-white bg-indigo-500 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
+      >
+        Search
+      </.button>
+    </.form>
     """
   end
 

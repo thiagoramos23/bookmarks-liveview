@@ -1,25 +1,12 @@
 <div class="pt-3 pb-3">
-  <.form for={:form} phx-submit="search" class="flex flex-items">
-    <input
-      type="text"
-      name="search"
-      class="block w-full px-3 py-2 placeholder-gray-400 border border-gray-300 appearance-none rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm mr-2"
-      value={@query_term}
-    />
-    <.button
-      type="submit"
-      class="flex justify-center w-32 px-2 py-2 text-sm font-semibold text-white bg-indigo-500 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
-    >
-      Search
-    </.button>
-  </.form>
+  <.search id="search-bookmarks" query_term={@query_term} />
 </div>
 
 <div class="flex justify-center pt-5">
   <div class="hidden sm:block">
     <nav class="flex space-x-4" aria-label="Tabs">
       <!--#{if @type === "read_it_later", do: "bg-indigo-100 text-indigo-700", else: ""} -->
-    <!-- Current: "bg-indigo-100 text-indigo-700", Default: "text-gray-500 hover:text-gray-700" -->
+      <!-- Current: "bg-indigo-100 text-indigo-700", Default: "text-gray-500 hover:text-gray-700" -->
       <.link
         patch={~p"/bookmarks?type=read_it_later"}
         class={[
@@ -109,6 +96,6 @@
     action={@live_action}
     bookmark={@bookmark}
     current_user={@current_user}
-    navigate={~p"/bookmarks"}
+    navigate={~p"/bookmarks?type=read_it_later"}
   />
 </.modal>
