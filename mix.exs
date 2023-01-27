@@ -19,7 +19,7 @@ defmodule Bookmarks.MixProject do
   def application do
     [
       mod: {Bookmarks.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:ex_machina, :logger, :runtime_tools]
     ]
   end
 
@@ -51,7 +51,9 @@ defmodule Bookmarks.MixProject do
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.2"},
-      {:plug_cowboy, "~> 2.5"}
+      {:plug_cowboy, "~> 2.5"},
+      {:ex_machina, "~> 2.7.0"},
+      {:argon2_elixir, "~> 3.0"}
     ]
   end
 

@@ -2,14 +2,18 @@ defmodule BookmarksWeb.BookmarkLiveTest do
   use BookmarksWeb.ConnCase
 
   import Phoenix.LiveViewTest
-  import Bookmarks.MarkersFixtures
 
   @create_attrs %{favorite: true, name: "some name", type: "some type", url: "some url"}
-  @update_attrs %{favorite: false, name: "some updated name", type: "some updated type", url: "some updated url"}
+  @update_attrs %{
+    favorite: false,
+    name: "some updated name",
+    type: "some updated type",
+    url: "some updated url"
+  }
   @invalid_attrs %{favorite: false, name: nil, type: nil, url: nil}
 
   defp create_bookmark(_) do
-    bookmark = bookmark_fixture()
+    bookmark = insert(:bookmark)
     %{bookmark: bookmark}
   end
 

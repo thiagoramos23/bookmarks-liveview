@@ -28,6 +28,7 @@ defmodule BookmarksWeb.ConnCase do
       import Plug.Conn
       import Phoenix.ConnTest
       import BookmarksWeb.ConnCase
+      import Bookmarks.Factory
     end
   end
 
