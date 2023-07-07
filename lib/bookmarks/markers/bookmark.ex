@@ -19,11 +19,17 @@ defmodule Bookmarks.Markers.Bookmark do
   end
 
   @required_fields [:name, :url, :type, :favorite, :user_id]
+  @update_fields [:name, :url, :type, :favorite]
 
   @doc false
   def changeset(bookmark, attrs) do
     bookmark
     |> cast(attrs, @required_fields)
     |> validate_required(@required_fields)
+  end
+
+  def update_changeset(bookmark, attrs) do
+    bookmark
+    |> cast(attrs, @update_fields)
   end
 end

@@ -2,6 +2,7 @@ defmodule Bookmarks.MarkersTest do
   use Bookmarks.DataCase
 
   alias Bookmarks.Markers
+  alias Bookmarks.Pagination.Paginator.Page
 
   setup do
     bookmark = insert(:bookmark)
@@ -12,6 +13,7 @@ defmodule Bookmarks.MarkersTest do
     alias Bookmarks.Markers.Bookmark
 
     @invalid_attrs %{favorite: nil, name: nil, type: nil, url: nil}
+    @valid_attrs %{favorite: true, name: "Test", type: :blog, url: "thiagoramos.me"}
 
     test "list_bookmarks_by_user/3 returns all bookmarks for a user", %{bookmark: bookmark} do
       assert %{data: [returned_bookmark], page: 1} =
@@ -39,6 +41,7 @@ defmodule Bookmarks.MarkersTest do
       assert bookmark.name == "some name"
       assert bookmark.type == :read_it_later
       assert bookmark.url == "some url"
+      assert bookmark.user_id == user.id
     end
 
     test "create_bookmark/1 with invalid data returns error changeset" do
