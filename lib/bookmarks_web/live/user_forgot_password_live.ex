@@ -5,13 +5,13 @@ defmodule BookmarksWeb.UserForgotPasswordLive do
 
   def render(assigns) do
     ~H"""
-    <div class="mx-auto max-w-sm">
+    <div class="max-w-sm mx-auto">
       <.header class="text-center">
         Forgot your password?
         <:subtitle>We'll send a password reset link to your inbox</:subtitle>
       </.header>
 
-      <.simple_form :let={f} id="reset_password_form" for={:user} phx-submit="send_email">
+      <.simple_form :let={f} id="reset_password_form" for={%{}} as={:user} phx-submit="send_email">
         <.input field={{f, :email}} type="email" placeholder="Email" required />
         <:actions>
           <.button phx-disable-with="Sending..." class="w-full">
@@ -19,10 +19,9 @@ defmodule BookmarksWeb.UserForgotPasswordLive do
           </.button>
         </:actions>
       </.simple_form>
-      <p class="text-center mt-4">
+      <p class="mt-4 text-center">
         <.link href={~p"/users/register"}>Register</.link>
-        |
-        <.link href={~p"/users/log_in"}>Log in</.link>
+        | <.link href={~p"/users/log_in"}>Log in</.link>
       </p>
     </div>
     """

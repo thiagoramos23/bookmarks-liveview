@@ -65,24 +65,6 @@
   </:actions>
 </.bookmark_table>
 
-<%!-- <.table id="bookmarks" rows={@bookmarks} row_click={&JS.navigate(~p"/bookmarks/#{&1}")}>
-  <:col :let={bookmark} label="Name"><%= bookmark.name %></:col>
-  <:col :let={bookmark} label="Url"><%= bookmark.url %></:col>
-  <:col :let={bookmark} label="Type"><%= bookmark.type %></:col>
-  <:col :let={bookmark} label="Favorite"><%= bookmark.favorite %></:col>
-  <:action :let={bookmark}>
-    <div class="sr-only">
-      <.link navigate={~p"/bookmarks/#{bookmark}"}>Show</.link>
-    </div>
-    <.link patch={~p"/bookmarks/#{bookmark}/edit"}>Edit</.link>
-  </:action>
-  <:action :let={bookmark}>
-    <.link phx-click={JS.push("delete", value: %{id: bookmark.id})} data-confirm="Are you sure?">
-      Delete
-    </.link>
-  </:action>
-</.table> --%>
-
 <.modal
   :if={@live_action in [:new, :edit]}
   id="bookmark-modal"

@@ -1,32 +1,25 @@
 defmodule BookmarksWeb.BookmarkLiveTest do
   use BookmarksWeb.ConnCase
-
   import Phoenix.LiveViewTest
-  import Bookmarks.MarkersFixtures
 
-  @create_attrs %{favorite: true, name: "some name", type: "some type", url: "some url"}
-  @update_attrs %{favorite: false, name: "some updated name", type: "some updated type", url: "some updated url"}
-  @invalid_attrs %{favorite: false, name: nil, type: nil, url: nil}
+  setup :register_and_log_in_user
 
-  defp create_bookmark(_) do
-    bookmark = bookmark_fixture()
-    %{bookmark: bookmark}
-  end
+  @invalid_attrs %{url: nil, name: nil}
 
   describe "Index" do
-    setup [:create_bookmark]
+    test "lists all bookmarks", %{conn: conn, user: user} do
+      bookmark = insert(:bookmark, type: :read_it_later, user: user)
+      {:ok, _index_live, html} = live(conn, ~p"/bookmarks?type=read_it_later")
 
-    test "lists all bookmarks", %{conn: conn, bookmark: bookmark} do
-      {:ok, _index_live, html} = live(conn, ~p"/bookmarks")
-
-      assert html =~ "Listing Bookmarks"
+      assert html =~ "Read It Later"
       assert html =~ bookmark.name
+      assert html =~ bookmark.url
     end
 
-    test "saves new bookmark", %{conn: conn} do
+    test "saves new bookmark", %{conn: conn, user: user} do
       {:ok, index_live, _html} = live(conn, ~p"/bookmarks")
 
-      assert index_live |> element("a", "New Bookmark") |> render_click() =~
+      assert index_live |> element("a", "Add New Bookmark") |> render_click() =~
                "New Bookmark"
 
       assert_patch(index_live, ~p"/bookmarks/new")
@@ -37,16 +30,25 @@ defmodule BookmarksWeb.BookmarkLiveTest do
 
       {:ok, _, html} =
         index_live
-        |> form("#bookmark-form", bookmark: @create_attrs)
+        |> form("#bookmark-form",
+          bookmark:
+            params_for(:bookmark,
+              name: "Testing",
+              url: "https://www.google.com",
+              type: :read_it_later,
+              user: user
+            )
+        )
         |> render_submit()
-        |> follow_redirect(conn, ~p"/bookmarks")
+        |> follow_redirect(conn, ~p"/bookmarks?type=read_it_later")
 
       assert html =~ "Bookmark created successfully"
-      assert html =~ "some name"
+      assert html =~ "Testing"
     end
 
-    test "updates bookmark in listing", %{conn: conn, bookmark: bookmark} do
-      {:ok, index_live, _html} = live(conn, ~p"/bookmarks")
+    test "updates bookmark in listing", %{conn: conn, user: user} do
+      bookmark = insert(:bookmark, type: :read_it_later, user: user)
+      {:ok, index_live, _html} = live(conn, ~p"/bookmarks?type=read_it_later")
 
       assert index_live |> element("#bookmarks-#{bookmark.id} a", "Edit") |> render_click() =~
                "Edit Bookmark"
@@ -59,15 +61,16 @@ defmodule BookmarksWeb.BookmarkLiveTest do
 
       {:ok, _, html} =
         index_live
-        |> form("#bookmark-form", bookmark: @update_attrs)
+        |> form("#bookmark-form", bookmark: params_for(:bookmark, name: "Testing again"))
         |> render_submit()
-        |> follow_redirect(conn, ~p"/bookmarks")
+        |> follow_redirect(conn, ~p"/bookmarks?type=read_it_later")
 
       assert html =~ "Bookmark updated successfully"
-      assert html =~ "some updated name"
+      assert html =~ "Testing again"
     end
 
-    test "deletes bookmark in listing", %{conn: conn, bookmark: bookmark} do
+    test "deletes bookmark in listing", %{conn: conn, user: user} do
+      bookmark = insert(:bookmark, type: :read_it_later, user: user)
       {:ok, index_live, _html} = live(conn, ~p"/bookmarks")
 
       assert index_live |> element("#bookmarks-#{bookmark.id} a", "Delete") |> render_click()
@@ -76,16 +79,16 @@ defmodule BookmarksWeb.BookmarkLiveTest do
   end
 
   describe "Show" do
-    setup [:create_bookmark]
-
-    test "displays bookmark", %{conn: conn, bookmark: bookmark} do
+    test "displays bookmark", %{conn: conn, user: user} do
+      bookmark = insert(:bookmark, type: :read_it_later, user: user)
       {:ok, _show_live, html} = live(conn, ~p"/bookmarks/#{bookmark}")
 
       assert html =~ "Show Bookmark"
       assert html =~ bookmark.name
     end
 
-    test "updates bookmark within modal", %{conn: conn, bookmark: bookmark} do
+    test "updates bookmark within modal", %{conn: conn, user: user} do
+      bookmark = insert(:bookmark, type: :read_it_later, user: user)
       {:ok, show_live, _html} = live(conn, ~p"/bookmarks/#{bookmark}")
 
       assert show_live |> element("a", "Edit") |> render_click() =~

@@ -24,6 +24,7 @@ defmodule Bookmarks.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import Bookmarks.DataCase
+      import Bookmarks.Factory
     end
   end
 

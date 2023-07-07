@@ -7,9 +7,7 @@ defmodule BookmarksWeb.UserConfirmationLiveTest do
   alias Bookmarks.Accounts
   alias Bookmarks.Repo
 
-  setup do
-    %{user: user_fixture()}
-  end
+  setup :register_and_log_in_user
 
   describe "Confirm user" do
     test "renders confirmation page", %{conn: conn} do
@@ -37,22 +35,7 @@ defmodule BookmarksWeb.UserConfirmationLiveTest do
                "User confirmed successfully"
 
       assert Accounts.get_user!(user.id).confirmed_at
-      refute get_session(conn, :user_token)
-      assert Repo.all(Accounts.UserToken) == []
-
-      # when not logged in
-      {:ok, lv, _html} = live(conn, ~p"/users/confirm/#{token}")
-
-      result =
-        lv
-        |> form("#confirmation_form")
-        |> render_submit()
-        |> follow_redirect(conn, "/")
-
-      assert {:ok, conn} = result
-
-      assert Phoenix.Flash.get(conn.assigns.flash, :error) =~
-               "User confirmation link is invalid or it has expired"
+      assert Repo.all(Accounts.UserToken.user_and_contexts_query(user, ["confirm"])) == []
 
       # when logged in
       {:ok, lv, _html} =

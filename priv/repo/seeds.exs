@@ -9,3 +9,11 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+
+alias Bookmarks.Accounts
+
+%{
+  email: "admin@admin.com",
+  password: "123456789123"
+}
+|> Accounts.register_user()

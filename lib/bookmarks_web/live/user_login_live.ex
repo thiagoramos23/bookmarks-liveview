@@ -3,7 +3,7 @@ defmodule BookmarksWeb.UserLoginLive do
 
   def render(assigns) do
     ~H"""
-    <div class="mx-auto max-w-sm">
+    <div class="max-w-sm mx-auto">
       <.header class="text-center">
         Sign in to account
         <:subtitle>
@@ -18,7 +18,7 @@ defmodule BookmarksWeb.UserLoginLive do
       <.simple_form
         :let={f}
         id="login_form"
-        for={:user}
+        for={%{}}
         action={~p"/users/log_in"}
         as={:user}
         phx-update="ignore"
