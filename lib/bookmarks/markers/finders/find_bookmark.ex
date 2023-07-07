@@ -34,6 +34,11 @@ defmodule Bookmarks.Markers.Finders.FindBookmark do
     |> where([bookmark: bookmark], bookmark.type == ^value)
   end
 
+  defp do_filter({:favorite, value}, query) do
+    query
+    |> where([bookmark: bookmark], bookmark.favorite == ^value)
+  end
+
   defp do_filter({:name, value}, query) do
     query
     |> where([bookmark: bookmark], ilike(bookmark.name, ^"%#{value}%"))

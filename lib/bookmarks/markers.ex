@@ -10,6 +10,19 @@ defmodule Bookmarks.Markers do
   alias Bookmarks.Markers.Finders.FindBookmark
 
   @doc """
+  Returns the list of favorite bookmarks for the user.
+
+  ## Examples
+
+      iex> list_favorite_bookmarks_by_user(user)
+      [%Bookmark{}, ...]
+
+  """
+  def list_favorite_bookmarks_by_user(user, page \\ 1) do
+    FindBookmark.find(%{user_id: user.id, favorite: true}, %{page: page, preloads: [:user]})
+  end
+
+  @doc """
   Returns the list of bookmarks for the user.
 
   ## Examples

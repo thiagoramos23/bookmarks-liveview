@@ -34,6 +34,12 @@ defmodule BookmarksWeb.BookmarkLive.Index do
     |> assign(:bookmark, %Bookmark{})
   end
 
+  defp apply_action(socket, :index, %{"type" => "favorite"}) do
+    socket
+    |> assign(:type, "favorite")
+    |> assign(:bookmarks, list_favorite_bookmarks(socket.assigns.current_user, 1))
+  end
+
   defp apply_action(socket, :index, %{"type" => type}) do
     socket
     |> assign(:type, type)
@@ -68,6 +74,11 @@ defmodule BookmarksWeb.BookmarkLive.Index do
 
   defp list_bookmarks(user, type, page) do
     %{data: data} = Markers.list_bookmarks_by_user(user, type, page)
+    data
+  end
+
+  defp list_favorite_bookmarks(user, page) do
+    %{data: data} = Markers.list_favorite_bookmarks_by_user(user, page)
     data
   end
 end
